@@ -1,5 +1,7 @@
 package services;
 
+import config.GeneralConfigurationManager;
+import util.ARPTableManager;
 import util.Energy;
 import util.ResponseMessage;
 
@@ -9,6 +11,11 @@ import models.ServerModel;
  * Performs operations related to physical servers
  */
 public abstract  class ServerService extends Service<ServerModel>{	
+	
+//	static {
+//        String location = GeneralConfigurationManager.getARPTableFileLocation();
+//        arpTableManager = new ARPTableManager(location);
+//    }
 	
 	/**
 	 * Enables a host from the pool

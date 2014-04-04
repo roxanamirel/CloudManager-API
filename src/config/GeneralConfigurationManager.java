@@ -29,5 +29,9 @@ public class GeneralConfigurationManager {
     public static String getArpLocation() {
         return generalProperties.getProperty("arpLocation");
     }
+    public static String getARPTableFileLocation() {
+        return generalProperties.getProperty("arpTableFileLocation");
+    }
+
 
 }
