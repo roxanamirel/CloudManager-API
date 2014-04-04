@@ -142,68 +142,82 @@ public class ServerOperations {
 		return isAlive;
 
 	}
-	public static String getServerMAC(String ip) throws ServiceCenterAccessException {
-        String mac = null;
-        pingTarget(ip);
-        String pingCmd = GeneralConfigurationManager.getArpLocation() + " " + ip;
-        try {
-            Runtime r = Runtime.getRuntime();
-            Process p = r.exec(pingCmd);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	/**
+	 * Retrieves MAC address of a server based on its ip
+	 * @param ip = the ip of the server
+	 * @return the MAC address of the server
+	 * @throws ServiceCenterAccessException
+	 */
+	public static String getServerMAC(String ip)
+			throws ServiceCenterAccessException {
+		String mac = null;
+		pingTarget(ip);
+		String pingCmd = GeneralConfigurationManager.getArpLocation() + " "
+				+ ip;
+		try {
+			Runtime r = Runtime.getRuntime();
+			Process p = r.exec(pingCmd);
 
-            in.readLine();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					p.getInputStream()));
 
-            mac = in.readLine();
-            int count = 0;
-            int length = mac.length();
-            while ((count < length) && (mac.charAt(count) != ' ')) {
-                count++;
-            }
-            while ((count < length) && (mac.charAt(count) == ' ')) {
-                count++;
-            }
-            while ((count < length) && (mac.charAt(count) != ' ')) {
-                count++;
-            }
-            while ((count < length) && (mac.charAt(count) == ' ')) {
-                count++;
-            }
-            int count_init = count;
-            while ((count < length) && (mac.charAt(count) != ' ')) {
-                count++;
-            }
-            String mac_final = mac.substring(count_init, count);
+			in.readLine();
 
-            mac = mac_final;
-            in.close();
-            p.getInputStream().close();
-            p.getOutputStream().close();
-            p.getErrorStream().close();
-            p.destroy();
-        } catch (Exception e) {
-            throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
-        }
-        return mac;
-    }
-	private static void pingTarget(String ip) throws ServiceCenterAccessException {
-        String pingCmd = GeneralConfigurationManager.getPingLocation() + " " + ip;
-        try {
-            Runtime r = Runtime.getRuntime();
-            Process p = r.exec(pingCmd);
+			mac = in.readLine();
+			int count = 0;
+			int length = mac.length();
+			while ((count < length) && (mac.charAt(count) != ' ')) {
+				count++;
+			}
+			while ((count < length) && (mac.charAt(count) == ' ')) {
+				count++;
+			}
+			while ((count < length) && (mac.charAt(count) != ' ')) {
+				count++;
+			}
+			while ((count < length) && (mac.charAt(count) == ' ')) {
+				count++;
+			}
+			int count_init = count;
+			while ((count < length) && (mac.charAt(count) != ' ')) {
+				count++;
+			}
+			String mac_final = mac.substring(count_init, count);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            in.readLine();
+			mac = mac_final;
+			in.close();
+			p.getInputStream().close();
+			p.getOutputStream().close();
+			p.getErrorStream().close();
+			p.destroy();
+		} catch (Exception e) {
+			throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
+		}
+		return mac;
+	}
 
-            in.close();
-            p.getInputStream().close();
-            p.getOutputStream().close();
-            p.getErrorStream().close();
-            p.destroy();
-        } catch (Exception e) {
-            throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
-        }
-    }
+	private static void pingTarget(String ip)
+			throws ServiceCenterAccessException {
+		String pingCmd = GeneralConfigurationManager.getPingLocation() + " "
+				+ ip;
+		try {
+			Runtime r = Runtime.getRuntime();
+			Process p = r.exec(pingCmd);
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					p.getInputStream()));
+			in.readLine();
+
+			in.close();
+			p.getInputStream().close();
+			p.getOutputStream().close();
+			p.getErrorStream().close();
+			p.destroy();
+		} catch (Exception e) {
+			throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
+		}
+	}
 
 	private static void waitUntilTargetIsAlive(String ip) {
 
@@ -309,7 +323,7 @@ public class ServerOperations {
 		}
 	}
 
-	private static  boolean checkIfAlive(String ip) {
+	private static boolean checkIfAlive(String ip) {
 		String pingCmd = GeneralConfigurationManager.getPingLocation() + " "
 				+ ip;
 		boolean ok = false;
@@ -408,9 +422,7 @@ public class ServerOperations {
 
 			} catch (IOException e) {
 				CloudLogger.getInstance().LogInfo(e.getMessage());
-				;
 			}
 		}
 	}
-
 }
