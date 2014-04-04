@@ -6,7 +6,7 @@ public abstract class CloudModel {
 	private String name;
 	
 	
-	
+	public CloudModel(){}
 	
 	public CloudModel(int id, String name) {
 		this.id = id;

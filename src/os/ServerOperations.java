@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import config.GeneralConfigurationManager;
+import exceptions.ServiceCenterAccessException;
 import logger.CloudLogger;
 import models.ServerModel;
 import util.ResponseMessage;
@@ -20,7 +21,7 @@ public class ServerOperations {
 	 *            = the host to be awaked
 	 * @return response message from the cloud manager
 	 */
-	public void wakeUp(ServerModel server) {
+	public static void wakeUp(ServerModel server) {
 		try {
 
 			String cmd = GeneralConfigurationManager.getNodesWakeUpMechanism()
@@ -73,7 +74,7 @@ public class ServerOperations {
 	 *            = the host to be shut down
 	 * @return response message from the cloud manager
 	 */
-	public void shutDown(ServerModel server) {
+	public static void shutDown(ServerModel server) {
 		if (!checkIfAlive(server.getName())) {
 			return;
 		}
@@ -105,7 +106,7 @@ public class ServerOperations {
 	 *            = the server to be checked
 	 * @return true if server is started, false otherwise
 	 */
-	public boolean serverIsAlive(ServerModel server) {
+	public static boolean serverIsAlive(ServerModel server) {
 		String pingCmd = GeneralConfigurationManager.getPingLocation() + " "
 				+ server.getName();
 		boolean isAlive = false;
@@ -141,8 +142,70 @@ public class ServerOperations {
 		return isAlive;
 
 	}
+	public static String getServerMAC(String ip) throws ServiceCenterAccessException {
+        String mac = null;
+        pingTarget(ip);
+        String pingCmd = GeneralConfigurationManager.getArpLocation() + " " + ip;
+        try {
+            Runtime r = Runtime.getRuntime();
+            Process p = r.exec(pingCmd);
 
-	private void waitUntilTargetIsAlive(String ip) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            in.readLine();
+
+            mac = in.readLine();
+            int count = 0;
+            int length = mac.length();
+            while ((count < length) && (mac.charAt(count) != ' ')) {
+                count++;
+            }
+            while ((count < length) && (mac.charAt(count) == ' ')) {
+                count++;
+            }
+            while ((count < length) && (mac.charAt(count) != ' ')) {
+                count++;
+            }
+            while ((count < length) && (mac.charAt(count) == ' ')) {
+                count++;
+            }
+            int count_init = count;
+            while ((count < length) && (mac.charAt(count) != ' ')) {
+                count++;
+            }
+            String mac_final = mac.substring(count_init, count);
+
+            mac = mac_final;
+            in.close();
+            p.getInputStream().close();
+            p.getOutputStream().close();
+            p.getErrorStream().close();
+            p.destroy();
+        } catch (Exception e) {
+            throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
+        }
+        return mac;
+    }
+	private static void pingTarget(String ip) throws ServiceCenterAccessException {
+        String pingCmd = GeneralConfigurationManager.getPingLocation() + " " + ip;
+        try {
+            Runtime r = Runtime.getRuntime();
+            Process p = r.exec(pingCmd);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            in.readLine();
+
+            in.close();
+            p.getInputStream().close();
+            p.getOutputStream().close();
+            p.getErrorStream().close();
+            p.destroy();
+        } catch (Exception e) {
+            throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
+        }
+    }
+
+	private static void waitUntilTargetIsAlive(String ip) {
 
 		String pingCmd = GeneralConfigurationManager.getPingLocation() + " "
 				+ ip;
@@ -192,7 +255,7 @@ public class ServerOperations {
 		}
 	}
 
-	private void waitUntilSSHAvailable(String ip) {
+	private static void waitUntilSSHAvailable(String ip) {
 
 		try {
 			boolean sshUp = false;
@@ -246,7 +309,7 @@ public class ServerOperations {
 		}
 	}
 
-	private boolean checkIfAlive(String ip) {
+	private static  boolean checkIfAlive(String ip) {
 		String pingCmd = GeneralConfigurationManager.getPingLocation() + " "
 				+ ip;
 		boolean ok = false;
@@ -300,7 +363,7 @@ public class ServerOperations {
 
 	}
 
-	private void waitUntilTargetIsOff(String ip) {
+	private static void waitUntilTargetIsOff(String ip) {
 
 		String pingCmd = GeneralConfigurationManager.getPingLocation() + " "
 				+ ip;
