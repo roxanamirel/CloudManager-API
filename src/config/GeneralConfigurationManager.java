@@ -26,5 +26,8 @@ public class GeneralConfigurationManager {
     public static String getPingLocation() {
         return generalProperties.getProperty("pingLocation");
     }
+    public static String getArpLocation() {
+        return generalProperties.getProperty("arpLocation");
+    }
 
 }

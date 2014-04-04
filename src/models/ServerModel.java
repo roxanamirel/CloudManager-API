@@ -1,9 +1,10 @@
 package models;
 
-public class ServerModel extends CloudModel {
+public abstract class ServerModel extends CloudModel {
 	
 	private String macAddress;
 	
+	public ServerModel(){}
 	public ServerModel(int id, String ipAddress) {
 		super(id, ipAddress);
 	}	

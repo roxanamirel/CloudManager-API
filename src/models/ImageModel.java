@@ -2,7 +2,7 @@ package models;
 
 import util.ImageType;
 
-public class ImageModel extends CloudModel {
+public abstract class ImageModel extends CloudModel {
 
 	private ImageType type;
 	private String description;

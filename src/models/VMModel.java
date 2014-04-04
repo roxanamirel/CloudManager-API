@@ -5,7 +5,7 @@ import util.VMState;
 /**
  * Contains data regarding a Virtual Machine
  */
-public class VMModel extends CloudModel {
+public abstract class VMModel extends CloudModel {
 
 	private int templateId;
 	private VMState state;

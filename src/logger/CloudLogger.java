@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import config.Configurations;
+
 public class CloudLogger {
 	private static CloudLogger instance = null;
     private final File log;
