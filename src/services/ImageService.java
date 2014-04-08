@@ -1,6 +1,7 @@
 package services;
 
 
+import util.ResponseMessage;
 import util.ResponseType;
 
 import models.ImageModel;
@@ -23,5 +24,7 @@ public abstract class ImageService extends Service<ImageModel>{
 	 * @param dataStoreId = id of the datastore that will store the image
 	 * @return response message from the cloud manager
 	 */
-	public abstract ResponseType allocate(String description, int dataStoreId); 
+	public abstract ResponseMessage allocate(String description, int dataStoreId); 
+	
+
 }

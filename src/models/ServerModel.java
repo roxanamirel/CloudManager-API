@@ -5,6 +5,11 @@ public abstract class ServerModel extends CloudModel {
 	private String macAddress;
 	
 	public ServerModel(){}
+	
+	/**
+	 * @param id
+	 * @param ipAddress (name from CloudModel)
+	 */
 	public ServerModel(int id, String ipAddress) {
 		super(id, ipAddress);
 	}	

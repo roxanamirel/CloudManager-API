@@ -16,7 +16,7 @@ public class CloudLogger {
     
     protected CloudLogger() {
         
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateTime = dateFormat.format(new Date());        
         String filePath = Configurations.LogPath + dateTime + ".txt";         
         log = new File(filePath);        

@@ -2,9 +2,9 @@ package services;
 
 import java.util.List;
 
-import util.Datacenter;
 import util.ResponseMessage;
 
+import models.Datacenter;
 import models.ServerModel;
 import models.TemplateModel;
 import models.VMModel;
@@ -33,15 +33,15 @@ public abstract class VMService extends Service<VMModel>{
 	 * @param server = the host where the vm will be deployed
 	 * @return response message from the cloud manager
 	 */
-	public abstract void deploy(VMModel vm, ServerModel server);
+	public abstract VMModel deploy(VMModel vm, ServerModel server);
 		
 	/**
 	 * Migrates a virtual machine to the specified server
 	 * @param vm = the virtual machine to be migrated
 	 * @param server = the host where the vm will be migrated
-	 * @return response message from the cloud manager
+	 * @return VMModel = migrated vm
 	 */
-	public abstract ResponseMessage migrate(VMModel vm, ServerModel server);
+	public abstract VMModel migrate(VMModel vm, ServerModel server);
 	
 	/**
 	 * Starts a Virtual Machine

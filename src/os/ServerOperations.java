@@ -10,9 +10,17 @@ import config.GeneralConfigurationManager;
 import exceptions.ServiceCenterAccessException;
 import logger.CloudLogger;
 import models.ServerModel;
+import util.ARPTableManager;
 import util.ResponseMessage;
 
 public class ServerOperations {
+
+	private static ARPTableManager arpTableManager;
+
+	static {
+		String location = GeneralConfigurationManager.getARPTableFileLocation();
+		arpTableManager = new ARPTableManager(location);
+	}
 
 	/**
 	 * Wakes up a host from the pool
@@ -23,7 +31,7 @@ public class ServerOperations {
 	 */
 	public static void wakeUp(ServerModel server) {
 		try {
-
+			System.out.println("waking up server " + server.getId());
 			String cmd = GeneralConfigurationManager.getNodesWakeUpMechanism()
 					+ " " + server.getMacAddress();
 
@@ -136,7 +144,6 @@ public class ServerOperations {
 
 		} catch (IOException e) {
 			CloudLogger.getInstance().LogInfo(e.getMessage());
-			;
 		}
 
 		return isAlive;
@@ -145,26 +152,44 @@ public class ServerOperations {
 
 	/**
 	 * Retrieves MAC address of a server based on its ip
-	 * @param ip = the ip of the server
+	 * 
+	 * @param ip
+	 *            = the ip of the server
 	 * @return the MAC address of the server
 	 * @throws ServiceCenterAccessException
 	 */
-	public static String getServerMAC(String ip)
-			throws ServiceCenterAccessException {
+	public static String getServerMAC(String ip) {
 		String mac = null;
-		pingTarget(ip);
-		String pingCmd = GeneralConfigurationManager.getArpLocation() + " "
-				+ ip;
-		try {
-			Runtime r = Runtime.getRuntime();
-			Process p = r.exec(pingCmd);
 
+		if (arpTableManager.hasMAC(ip)) {
+			mac = arpTableManager.getMAC(ip);
+		} else {
+			mac = getMAC(ip);
+			arpTableManager.addMAC(ip, mac);
+		}
+
+		return mac;
+	}
+
+	private static String getMAC(String ip) {
+		String mac = null;
+
+		try {
+			pingTarget(ip);
+			String arpCmd = GeneralConfigurationManager.getArpLocation() + " "
+					+ ip;
+			Runtime r = Runtime.getRuntime();
+			Process p = r.exec(arpCmd);
+
+			// TODO: nu parseaza nime mac
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					p.getInputStream()));
 
 			in.readLine();
 
 			mac = in.readLine();
+
+			String[] response = mac.split(" ");
 			int count = 0;
 			int length = mac.length();
 			while ((count < length) && (mac.charAt(count) != ' ')) {
@@ -186,13 +211,14 @@ public class ServerOperations {
 			String mac_final = mac.substring(count_init, count);
 
 			mac = mac_final;
+
 			in.close();
 			p.getInputStream().close();
 			p.getOutputStream().close();
 			p.getErrorStream().close();
 			p.destroy();
 		} catch (Exception e) {
-			throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
+			CloudLogger.getInstance().LogInfo(e.getMessage() + e.getCause());
 		}
 		return mac;
 	}
