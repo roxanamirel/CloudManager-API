@@ -7,12 +7,12 @@ import java.util.Properties;
 public class GeneralConfigurationManager {
 
     private static Properties generalProperties;
-    private static final String CONFIG_PATH="/var/lib/one/workspace/CloudManager-API/src/config/config.properties";
 
     static {
         generalProperties = new Properties();
+        String path = generalProperties.getProperty("configPath");
         try {
-            generalProperties.load(new FileInputStream(CONFIG_PATH));
+            generalProperties.load(new FileInputStream(path));
         } catch (IOException e) {
             System.out.println("Unable to load CONFIG_PATH file");
             System.exit(1);
