@@ -1,9 +1,6 @@
 package services;
 
-
 import util.ResponseMessage;
-import util.ResponseType;
-
 import models.ImageModel;
 
 /**

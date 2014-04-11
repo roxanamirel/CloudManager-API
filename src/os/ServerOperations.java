@@ -11,7 +11,6 @@ import exceptions.ServiceCenterAccessException;
 import logger.CloudLogger;
 import models.ServerModel;
 import util.ARPTableManager;
-import util.ResponseMessage;
 
 public class ServerOperations {
 
@@ -153,8 +152,7 @@ public class ServerOperations {
 	/**
 	 * Retrieves MAC address of a server based on its ip
 	 * 
-	 * @param ip
-	 *            = the ip of the server
+	 * @param ip = the ip of the server
 	 * @return the MAC address of the server
 	 * @throws ServiceCenterAccessException
 	 */
@@ -181,7 +179,6 @@ public class ServerOperations {
 			Runtime r = Runtime.getRuntime();
 			Process p = r.exec(arpCmd);
 
-			// TODO: nu parseaza nime mac
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					p.getInputStream()));
 
@@ -189,7 +186,6 @@ public class ServerOperations {
 
 			mac = in.readLine();
 
-			String[] response = mac.split(" ");
 			int count = 0;
 			int length = mac.length();
 			while ((count < length) && (mac.charAt(count) != ' ')) {
@@ -277,7 +273,7 @@ public class ServerOperations {
 
 					}
 					try {
-						Thread.currentThread().sleep(1000);
+						Thread.sleep(1000);
 					} catch (InterruptedException ex) {
 						CloudLogger.getInstance().LogInfo(ex.getMessage());
 					}
@@ -319,7 +315,7 @@ public class ServerOperations {
 							proc.getOutputStream().close();
 							proc.getErrorStream().close();
 							proc.destroy();
-							Thread.currentThread().sleep(10000);
+							Thread.sleep(10000);
 
 						} else {
 							CloudLogger.getInstance().LogInfo(
@@ -435,7 +431,7 @@ public class ServerOperations {
 						break;
 					}
 					try {
-						Thread.currentThread().sleep(1000);
+						Thread.sleep(1000);
 					} catch (InterruptedException ex) {
 						CloudLogger.getInstance().LogInfo(ex.getMessage());
 					}

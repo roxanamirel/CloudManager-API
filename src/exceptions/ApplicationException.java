@@ -1,7 +1,12 @@
 package exceptions;
 
 public class ApplicationException extends ServiceCenterAccessException{
-    public ApplicationException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8654211850353958749L;
+
+	public ApplicationException(String message) {
         super(message);
     }
 
