@@ -10,6 +10,9 @@ public abstract class VMModel extends CloudModel {
 	private int templateId;
 	private VMState state;
 	private int serverId;
+	private Float cpu;
+	private int cores;
+	private int memory;
 
 	public VMModel(int id, String name) {
 		super(id, name);
@@ -28,6 +31,51 @@ public abstract class VMModel extends CloudModel {
 		this.templateId = templateId;
 		this.state = state;
 		this.serverId = serverId;
+	}
+
+	/**
+	 * @return the cpu
+	 */
+	public Float getCpu() {
+		return cpu;
+	}
+
+	/**
+	 * @param cpu
+	 *            the cpu to set
+	 */
+	public void setCpu(float cpu) {
+		this.cpu = cpu;
+	}
+
+	/**
+	 * @return the cores
+	 */
+	public int getCores() {
+		return cores;
+	}
+
+	/**
+	 * @param cores
+	 *            the cores to set
+	 */
+	public void setCores(int cores) {
+		this.cores = cores;
+	}
+
+	/**
+	 * @return the memory
+	 */
+	public int getMemory() {
+		return memory;
+	}
+
+	/**
+	 * @param memory
+	 *            the memory to set
+	 */
+	public void setMemory(int memory) {
+		this.memory = memory;
 	}
 
 	/**

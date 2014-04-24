@@ -7,10 +7,10 @@ import java.util.Properties;
 public class GeneralConfigurationManager {
 
     private static Properties generalProperties;
+    private static String path = "/var/lib/one/workspace/CloudManager-API/src/config/config.properties";
 
     static {
         generalProperties = new Properties();
-        String path = generalProperties.getProperty("configPath");
         try {
             generalProperties.load(new FileInputStream(path));
         } catch (IOException e) {
