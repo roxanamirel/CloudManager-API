@@ -152,7 +152,8 @@ public class ServerOperations {
 	/**
 	 * Retrieves MAC address of a server based on its ip
 	 * 
-	 * @param ip = the ip of the server
+	 * @param ip
+	 *            = the ip of the server
 	 * @return the MAC address of the server
 	 * @throws ServiceCenterAccessException
 	 */
