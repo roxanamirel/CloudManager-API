@@ -64,4 +64,14 @@ public abstract class VMService extends Service<VMModel>{
 	 * @return response message from the cloud manager
 	 */
 	public abstract ResponseMessage interCloudMigrate(VMModel vm, Datacenter datacenter);
+	
+	
+	/**
+	 * Allocates a virtual machine based on the specified template model
+	 * @param templateModel = the template model based on which the VM will be created
+	 * This is the template which is received from another data center when performing
+	 * inter cloud migration
+	 * @return response message from the cloud manager
+	 */
+	public abstract ResponseMessage allocateICVirtualMachine(TemplateModel templateModel);
 }
