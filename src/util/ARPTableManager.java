@@ -6,12 +6,6 @@
 
 package util;
 
-/**
- *
- * @author AM
- */
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
